@@ -36,3 +36,18 @@ opt.timeoutlen = 400         -- 快捷键等待 400ms
 
 -- 剪贴板:与系统 Wayland 剪贴板互通(已装 wl-clipboard)
 opt.clipboard = 'unnamedplus'
+
+-- 禁用不使用的“远程插件 provider”(node/perl/ruby/python),消除 checkhealth 噪音
+vim.g.loaded_node_provider = 0
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_ruby_provider = 0
+vim.g.loaded_python3_provider = 0
+
+-- Markdown:自动折行 + 拼写检查
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'markdown',
+  callback = function()
+    vim.opt_local.wrap = true
+    vim.opt_local.spell = true
+  end,
+})
