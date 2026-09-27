@@ -43,3 +43,5 @@
     gcc / gc      注释行 / 注释选区
     补全:<C-y> 确认,<C-n>/<C-p> 选择,<C-space> 呼出,<C-k> 签名
     surround:saiw) 加括号,sd) 删,sr)' 换;文本对象:va)/via)
+
+## AI生成，勿喷，第一次开启新大门！  喵喵
