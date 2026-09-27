@@ -3,14 +3,14 @@
 
 -- 1) 诊断外观
 vim.diagnostic.config({
-  virtual_text = { prefix = '●' },  -- 行尾内联显示诊断
-  severity_sort = true,             -- 严重的排前面
-  signs = true,                     -- 行号旁显示标记
-  underline = true,                 -- 出错处下划线
-  update_in_insert = false,         -- 插入模式不刷新(少打扰)
+  virtual_text = { prefix = '●' },
+  severity_sort = true,
+  signs = true,
+  underline = true,
+  update_in_insert = false,
 })
 
--- 2) 各语言服务器:cmd 指向 pacman 装的可执行文件
+-- 2) 各语言服务器
 vim.lsp.config('pyright', {
   cmd = { 'pyright-langserver', '--stdio' },
   filetypes = { 'python' },
@@ -29,10 +29,10 @@ vim.lsp.config('lua_ls', {
   root_markers = { '.luarc.json', '.git' },
   settings = {
     Lua = {
-      runtime = { version = 'LuaJIT' },        -- nvim 用 LuaJIT 运行
-      diagnostics = { globals = { 'vim' } },   -- 让 lua_ls 认识 vim 全局
+      runtime = { version = 'LuaJIT' },
+      diagnostics = { globals = { 'vim' } },
       workspace = { checkThirdParty = false },
-      telemetry = { enable = false },          -- 关掉遥测
+      telemetry = { enable = false },
     },
   },
 })
@@ -43,16 +43,18 @@ vim.lsp.config('marksman', {
   root_markers = { '.marksman.toml', '.git' },
 })
 
--- 3) 通配配置('*' 对每个 server 生效;blink.cmp 之后会在这里扩展 capabilities)
+-- 3) 通配配置:把“补全能力”交给 blink.cmp(插件没加载则退回默认)
+local has_blink, blink = pcall(require, 'blink.cmp')
 vim.lsp.config('*', {
-  capabilities = vim.lsp.protocol.make_client_capabilities(),
+  capabilities = has_blink and blink.get_lsp_capabilities()
+    or vim.lsp.protocol.make_client_capabilities(),
 })
 
--- 4) 服务器连上后,挂 buffer 级快捷键
+-- 4) 服务器连上后挂快捷键
 vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(ev)
     local map = vim.keymap.set
-    local o = { buffer = ev.buf, silent = true }   -- 只在这个缓冲区生效
+    local o = { buffer = ev.buf, silent = true }
     map('n', 'gd', vim.lsp.buf.definition, o)
     map('n', 'gD', vim.lsp.buf.declaration, o)
     map('n', 'gr', vim.lsp.buf.references, o)
@@ -66,5 +68,5 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
--- 5) 启用(按 filetypes 匹配、按 root_markers 找项目根)
+-- 5) 启用
 vim.lsp.enable({ 'pyright', 'bashls', 'lua_ls', 'marksman' })

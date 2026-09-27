@@ -7,5 +7,6 @@ require('plugins')     -- 插件清单(vim.pack)
 require('ui')          -- 主题 + 状态栏
 require('editing')     -- 编辑增强
 require('treesitter')  -- 原生语法高亮
-require('lsp')         -- LSP
+require('completion')  -- 补全(blink.cmp)
+require('lsp')         -- LSP(用到 blink 的能力)
 require('keymaps')     -- 快捷键
