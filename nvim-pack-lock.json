@@ -1,0 +1,9 @@
+{
+  "plugins": {
+    "tokyonight.nvim": {
+      "rev": "545d72cde6400835d895160ecb5853874fd5156d",
+      "src": "https://github.com/folke/tokyonight.nvim",
+      "version": "4.0.0 - 5.0.0"
+    }
+  }
+}
